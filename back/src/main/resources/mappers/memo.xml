@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.vue.model.mapper.MemoMapper">
+
+	<insert id="regist" parameterType="memoDto">
+		insert into memo (userid, comment, memotime, articleno)
+		values (#{userid},  #{comment},  now(),#{articleno})
+	</insert>
+	
+	<select id="list" parameterType="memoParameterDto" resultType="memoDto">
+		select memono, articleno, userid, comment, memotime
+		from memo
+		where articleno = #{articleno}
+		order by memono
+		limit #{start}, #{spp}
+	</select>
+	
+	<select id="getTotalCount" parameterType="map" resultType="int">
+		select count(memono)
+		from memo
+		where articleno = #{articleno}
+	</select>
+	
+	<update id="edit" parameterType="memoDto">
+		update memo 
+		set comment = #{comment}
+		where memono = #{memono}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		delete from memo
+		where memono = #{memono}
+	</delete>
+</mapper>
+

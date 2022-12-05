@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.vue.model.mapper.MemberMapper">
+
+	<select id="login" parameterType="memberDto" resultType="memberDto">
+		select username, userid, email, usertype
+		from member
+		where userid = #{userid} and userpwd = #{userpwd}
+	</select>
+	
+	<select id="userInfo" parameterType="string" resultType="memberDto">
+		select username, userid, email, joindate, usertype
+		from member
+		where userid = #{userid}
+	</select>
+	
+	<!-- int register(Map<String, String> map) throws SQLException; -->
+	<insert id="signup" parameterType="memberDto">
+		insert into member(userid, username, userpwd, usertype, email, joindate)
+		values (#{userid}, #{username}, #{userpwd}, 'u', #{email}, now())
+	</insert>
+
+	<!-- int update(Map<String, String> map) throws SQLException; -->
+	<update id="edit" parameterType="memberDto">
+		update member
+		set username = #{username}, userpwd = #{userpwd}, email = #{email}
+		where userid = #{userid}
+	</update>
+	
+	<delete id="deleteInterest" parameterType="map">
+        delete from interest
+        where userid = #{userid} and aptCode = #{aptcode}
+    </delete>
+	
+	<delete id="deleteMemo" parameterType="string">
+		delete from memo
+		where userid = #{userid}
+	</delete>
+	
+	<delete id="deleteArticle" parameterType="string">
+		delete from board
+		where userid = #{userid}
+	</delete>
+	
+		<delete id="delete" parameterType="string">
+		delete from member
+		where userid = #{userid}
+	</delete>
+	
+	<select id="idcheck" parameterType="string" resultType="int">
+		select count(*) from member
+		where userid = #{userid}
+	</select>
+	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from member
+		where userid = #{userid}
+	</select>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update member
+		set token = #{token}
+		where userid = #{userid}
+	</update>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update member
+		set token = #{token, jdbcType=VARCHAR}
+		where userid = #{userid}
+	</update>
+
+		
+</mapper>
